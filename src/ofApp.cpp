@@ -13,27 +13,30 @@ void ofApp::setup(){
 		}
 	}
 
-
-
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+
+	mixer.update();
+
 	screen[0].begin();
 	ofClear(0);
-	ofDrawRectangle(50, 50, 800, 300);
+	mixer.drawLeft();
 	screen[0].end();
 
 	screen[1].begin();
 	ofClear(0);
-	ofDrawCircle(200, 200, 100, 100);
+	mixer.drawLeft();
 	screen[1].end();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 	// output
 	screen[0].draw(0, 0);
-	screen[1].draw(ofGetWidth() / 2 + 1, 0);
+	screen[1].draw(ofGetWidth() / 2, 0);
 }
 

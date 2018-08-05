@@ -8,44 +8,48 @@ class SimulatorApp : public ofBaseApp {
 public:
 
 	void setup() {
+		cam.setDistance(30);
+		rect = ofMesh::plane(16, 9, 2, 2);
 		
-		rect = ofMesh::plane(16, 9, 1, 1);
+		ofBackground(0);
 		
 	}
 
 	void update() {}
 	
 	void draw() {
-		ofEnableAlphaBlending();
-		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+		//ofNoFill();
+		//ofEnableAlphaBlending();
+		//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		
 		cam.begin();
-		mainApp->getRearFbo().getTexture().bind();
+		
+
+		mainApp->getRearFbo().getTextureReference().bind();
 		for (int i = 0; i < 3; i++) {
 			ofPushMatrix();
 			ofTranslate(16 * (i - 1), 0, 10);
-			ofRotate(90, 1, 0, 0);
 
-			rect.draw();
+			rect.draw(OF_MESH_FILL);
 			ofPopMatrix();
 		}
-		mainApp->getRearFbo().getTexture().unbind();
+		mainApp->getRearFbo().getTextureReference().unbind();
 		
-		mainApp->getFrontFbo().getTexture().bind();
+		mainApp->getFrontFbo().getTextureReference(0).bind();
 		for (int i = 0; i < 3; i++) {
 			ofPushMatrix();
-			ofTranslate(16 * (i - 1), -10);
-			ofRotate(90, 1, 0, 0);
+			ofTranslate(16 * (i - 1), 0, -10);
+			//ofRotate(90, 1, 0, 0);
 
-			rect.draw();
+			rect.draw(OF_MESH_FILL);
 			ofPopMatrix();
 		}
-		mainApp->getFrontFbo().getTexture().unbind();
+		mainApp->getFrontFbo().getTextureReference(0).unbind();
 
-		ofDisableBlendMode();
-		ofDisableAlphaBlending();
-		
 		cam.end();
+	
+		//ofDisableBlendMode();
+		//ofDisableAlphaBlending();
 	}
 
 	ofPtr<ofApp> mainApp;
@@ -54,6 +58,7 @@ private:
 	
 	ofRectangle front; ofRectangle rear;
 	ofEasyCam cam;
+	ofShader shader;
 
-	ofVboMesh rect;
+	ofMesh rect;
 };

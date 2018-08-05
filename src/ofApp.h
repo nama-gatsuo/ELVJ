@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "Mixer.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -16,6 +17,6 @@ public:
 	const ofFbo& getRearFbo() { return screen[1]; }
 
 private:
-
+	Mixer mixer;
 	ofFbo screen[2];
 };
