@@ -28,7 +28,7 @@ void ofApp::update(){
 
 	screen[1].begin();
 	ofClear(0);
-	mixer.drawLeft();
+	mixer.drawRight();
 	screen[1].end();
 
 }

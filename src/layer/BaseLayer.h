@@ -5,13 +5,15 @@ class BaseLayer {
 public:
 	enum Mode { LEFT, RIGHT, BOTH };
 
-	BaseLayer(int w, int h) : alpha(0.) {
-		fbo.allocate(w, h, GL_RGBA);
+	BaseLayer(int w, int h) : alpha(0.) {}
+
+	virtual void render() = 0;
+	virtual ofFbo& getFbo() = 0;
+	
+	void draw() {
+		getFbo().draw(0, 0);
 	}
 
-	virtual void update() = 0;
-	virtual void draw() = 0;
-	
 	void setAlpha(float alpha) { this->alpha = alpha; }
 	float getAlpha() { return alpha; }
 	
@@ -33,7 +35,6 @@ public:
 	bool isDrawInRight() { return bDrawInRight; }
 
 private:
-	ofFbo fbo;
 	float alpha;
 	bool bDrawInLeft; bool bDrawInRight;
 };

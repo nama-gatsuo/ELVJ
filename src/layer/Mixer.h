@@ -12,12 +12,13 @@ public:
 	void update() {
 		for (auto layer : layers) {
 			if (layer->isActive()) {
-				layer->update();
+				layer->render();
 			}
 		}
 	}
 
 	void drawLeft() {
+		// simple layering
 		for (auto layer : layers) {
 			if (layer->isActive() && layer->isDrawInLeft()) {
 				ofSetColor(255, 255 * layer->getAlpha());
