@@ -13,7 +13,12 @@ void ofApp::setup(){
 		}
 	}
 
-	
+	// layer 1
+	auto l1 = mixer.addLayer<ThreeLayer>();
+	l1->setDrawArea(BaseLayer::LEFT);
+	l1->addObject<CityObject>();
+
+
 }
 
 //--------------------------------------------------------------

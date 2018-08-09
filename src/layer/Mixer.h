@@ -38,7 +38,7 @@ public:
 
 	template<class T>
 	ofPtr<T> addLayer() {
-		ofPtr<T> layer = std::make_shared<T>();
+		ofPtr<T> layer = std::make_shared<T>(ofGetWidth() / 2, ofGetHeight());
 		layers.push_back(layer);
 		return layer;
 	}

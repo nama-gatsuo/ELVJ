@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "Mixer.h"
+#include "ThreeLayer.h"
+#include "CityObject.h"
 
 class ofApp : public ofBaseApp {
 public:
