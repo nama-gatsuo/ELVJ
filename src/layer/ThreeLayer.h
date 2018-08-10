@@ -9,36 +9,10 @@ using namespace ofxDeferred;
 
 class ThreeLayer : public BaseLayer {
 public:
-	ThreeLayer(int w, int h) : BaseLayer(w, h) {
-		if (gbuffer == nullptr) {
-			gbuffer = std::make_shared<ofxDeferred::GBuffer>();
-			gbuffer->setup(w, h);
-		}
-		
-		if (cam == nullptr) {
-			cam = std::make_shared<ofEasyCam>();
-		}
+	ThreeLayer(int w, int h);
 
-		processor.init(w, h);
-		processor.setGBuffer(gbuffer);
-
-		auto s = processor.createPass<SsaoPass>();
-		s->setDarkness(1.);
-		s->setOcculusionRadius(1.);
-		processor.createPass<HdrBloomPass>();
-	}
-	ofFbo& getFbo() {
-		return processor.getFbo();
-	}
-
-	void render() {
-		gbuffer->begin(*cam);
-		for (auto& obj : objects) {
-			obj->update();
-			obj->draw(1. / (cam->getFarClip() - cam->getNearClip()));
-		}
-		gbuffer->end();
-	}
+	ofFbo& getFbo() { return processor.getFbo(); }
+	void render();
 
 	template<class T>
 	ofPtr<T> addObject() {

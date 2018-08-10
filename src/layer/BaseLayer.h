@@ -13,7 +13,7 @@ public:
 	void setAlpha(float alpha) { this->alpha = alpha; }
 	float getAlpha() { return alpha; }
 	
-	bool isActive() { return alpha < 0.001; }
+	bool isActive() { return alpha > 0.001; }
 	
 	void setDrawArea(const Mode& mode) {
 		if (mode == LEFT) {

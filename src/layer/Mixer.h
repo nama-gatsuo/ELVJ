@@ -12,7 +12,7 @@ public:
 	void update() {
 		for (auto layer : layers) {
 			if (layer->isActive()) {
-				layer->render();
+				if (layer->isActive()) layer->render();
 			}
 		}
 	}
