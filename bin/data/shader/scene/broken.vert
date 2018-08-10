@@ -7,8 +7,7 @@ in vec4 normal; // oF Default
 in vec4 color; // oF Default
 in vec2 texcoord; // oF Default
 
-uniform float farClip;
-uniform float nearClip;
+uniform float lds;
 uniform float seed;
 
 out vec4 vPosition;
@@ -24,7 +23,7 @@ void main(){
     gl_Position = modelViewProjectionMatrix * vec4(p, 1.);
 
     vec4 viewPos = modelViewMatrix * vec4(p, 1.);
-    vDepth = - viewPos.z / (farClip - nearClip);
+    vDepth = - viewPos.z * lds;
     vNormal = (normalMatrix * normal).xyz;
     vTexCoord = texcoord;
     vColor = color;

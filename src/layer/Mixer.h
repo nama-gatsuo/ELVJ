@@ -22,7 +22,7 @@ public:
 		for (auto layer : layers) {
 			if (layer->isActive() && layer->isDrawInLeft()) {
 				ofSetColor(255, 255 * layer->getAlpha());
-				layer->draw();
+				layer->getFbo().draw(0, 0);
 			}
 		}
 	}
@@ -31,7 +31,7 @@ public:
 		for (auto layer : layers) {
 			if (layer->isActive() && layer->isDrawInRight()) {
 				ofSetColor(255, 255 * layer->getAlpha());
-				layer->draw();
+				layer->getFbo().draw(0, 0);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
 #include "ThreeLayer.h"
 
-ofxDeferred::GBuffer ThreeLayer::gbuffer;
-ofEasyCam ThreeLayer::cam;
+ofPtr<ofxDeferred::GBuffer> ThreeLayer::gbuffer;
+ofPtr<ofEasyCam> ThreeLayer::cam;

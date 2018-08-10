@@ -9,10 +9,6 @@ public:
 
 	virtual void render() = 0;
 	virtual ofFbo& getFbo() = 0;
-	
-	void draw() {
-		getFbo().draw(0, 0);
-	}
 
 	void setAlpha(float alpha) { this->alpha = alpha; }
 	float getAlpha() { return alpha; }

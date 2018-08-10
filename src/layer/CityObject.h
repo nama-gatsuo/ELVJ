@@ -9,17 +9,17 @@ public:
 		
 		shader.load("shader/scene/broken.vert", "shader/customShader.frag");
 
-		const int wn = 512;
-		const int hn = 512;
+		const int wn = 256;
+		const int hn = 256;
 
 		const int initialSize = 64;
 
 		for (int w = 0; w < wn; w += initialSize) {
 			for (int h = 0; h < hn; h += initialSize) {
-				subdivide(w, h, initialSize, 0);
+				//subdivide(w, h, initialSize, 0);
 			}
 		}
-
+		addBox(mat4(100.), ofFloatColor(1));
 	}
 	
 	void update() {
@@ -27,12 +27,12 @@ public:
 	}
 	
 	void draw(float lds) {
-		shader.begin();
-		shader.setUniform1f("lds", lds);
+		//shader.begin();
+		//shader.setUniform1f("lds", lds);
 
 		mesh.draw();
 
-		shader.end();
+		//shader.end();
 	}
 
 	void bang() {
@@ -42,9 +42,12 @@ public:
 private:
 
 	void subdivide(int x, int y, int size, int level) {
-		const unsigned maxlevel = 2;
+		const int maxlevel = 1;
 
-		if (level >= maxlevel) tower(translate(vec3(x, 0, y)));
+		if (level >= maxlevel) { 
+			tower(translate(vec3(x, 0, y)));
+			return;
+		}
 
 		float coin = ofRandom(1.);
 		if (coin < 0.5) {

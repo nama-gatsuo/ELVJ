@@ -10,8 +10,17 @@ using namespace ofxDeferred;
 class ThreeLayer : public BaseLayer {
 public:
 	ThreeLayer(int w, int h) : BaseLayer(w, h) {
-		if (!gbuffer.isAllcated()) gbuffer.setup(w, h);
-		processor.setGBuffer(ofPtr<GBuffer>(&gbuffer));
+		if (gbuffer == nullptr) {
+			gbuffer = std::make_shared<ofxDeferred::GBuffer>();
+			gbuffer->setup(w, h);
+		}
+		
+		if (cam == nullptr) {
+			cam = std::make_shared<ofEasyCam>();
+		}
+
+		processor.init(w, h);
+		processor.setGBuffer(gbuffer);
 
 		auto s = processor.createPass<SsaoPass>();
 		s->setDarkness(1.);
@@ -23,12 +32,12 @@ public:
 	}
 
 	void render() {
-		gbuffer.begin(cam);
+		gbuffer->begin(*cam);
 		for (auto& obj : objects) {
 			obj->update();
-			obj->draw(1. / (cam.getFarClip() - cam.getNearClip()));
+			obj->draw(1. / (cam->getFarClip() - cam->getNearClip()));
 		}
-		gbuffer.end();
+		gbuffer->end();
 	}
 
 	template<class T>
@@ -39,8 +48,8 @@ public:
 	}
 
 protected:
-	static ofxDeferred::GBuffer gbuffer; // share in three layer
-	static ofEasyCam cam;
+	static ofPtr<ofxDeferred::GBuffer> gbuffer; // share in three layer
+	static ofPtr<ofEasyCam> cam;
 	
 	BaseProcessor processor;
 	std::vector<ofPtr<BaseObject>> objects;
