@@ -33,7 +33,7 @@ void main() {
     if (depth > 0.0) {
         for (int i = 0; i < LoopNum; i++) {
 
-            vec3 s = position.xyz + (normal + getRandomVector(vec2(i*55.5, i*66.6))) * radius;
+            vec3 s = position.xyz + (normal + getRandomVector(vec2(i*5.5, i*6.6))) * radius;
 
             vec4 offset = vec4(s, 1.0);
             offset = projectionMatrix * offset;

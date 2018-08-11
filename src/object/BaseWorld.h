@@ -2,21 +2,30 @@
 #include "ofTypes.h"
 #include "GBuffer.hpp"
 #include "BaseObject.h"
+#include "StateCam.h"
 
 class BaseWorld {
 public:
 	BaseWorld(int w, int h) {
 		gbuffer = make_shared<ofxDeferred::GBuffer>();
 		gbuffer->setup(w, h);
+		
+		ofAddListener(Events::ToggleObject, this, &BaseWorld::toggleObject);
+	}
+
+	~BaseWorld() {
+		ofRemoveListener(Events::ToggleObject, this, &BaseWorld::toggleObject);
 	}
 
 	void update() {
 		
+		cam.update();
+
 		gbuffer->begin(cam, true);
 		for (auto& obj : objects) {
 			if (obj->isVisible()) {
 				obj->update();
-				obj->draw(1. / (cam.getFarClip() - cam.getNearClip()));
+				obj->draw(cam.getLinearScalar());
 			}
 		}
 		gbuffer->end();
@@ -38,9 +47,18 @@ public:
 		return obj;
 	}
 
+	void toggleObject(int& id) {
+		if (hasData(id)) {
+			objects[id]->toggleVisible();
+		}
+	}
+
+	bool hasData(int id) {
+		return id < objects.size() && id >= 0;;
+	}
+
 private:
-	ofEasyCam cam;
 	ofPtr<ofxDeferred::GBuffer> gbuffer;
 	std::vector<ofPtr<BaseObject>> objects;
-
+	StateCam cam;
 };

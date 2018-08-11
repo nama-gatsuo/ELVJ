@@ -3,11 +3,23 @@
 #include "BaseLayer.h"
 #include "ofTypes.h"
 #include "ofGraphics.h"
+#include "Events.h"
 
 class Mixer {
 public:
 	
-	Mixer() {}
+	Mixer() {
+		ofAddListener(Events::LayerAlphaChange, this, &Mixer::onChangeLayerAlpha);
+	}
+
+	~Mixer() {
+		ofRemoveListener(Events::LayerAlphaChange, this, &Mixer::onChangeLayerAlpha);
+	}
+
+	void onChangeLayerAlpha(LayerAlpha& e) {
+		if (hasData(e.layer)) layers[e.layer]->setAlpha(e.alpha);
+	}
+
 
 	void update() {
 		for (auto layer : layers) {
@@ -48,7 +60,12 @@ public:
 		return layers.size();
 	}
 
+	bool hasData(int id) {
+		return id < layers.size() && id >= 0;
+	}
+
 private:
+
 	std::vector<ofPtr<BaseLayer>> layers;
 
 };

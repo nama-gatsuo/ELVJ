@@ -44,7 +44,7 @@ private:
 	void subdivide(int x, int y, int size, int level) {
 		const int maxlevel = 2;
 
-		mat4 m = translate(vec3(x, 0, y)) * scale(vec3(size * 0.9));
+		mat4 m = translate(vec3(x, 0, y)) * scale(vec3(size * 0.8));
 
 		if (level >= maxlevel) { 
 			tower(m);
@@ -141,8 +141,8 @@ private:
 
 		if (coin < 0.4) {
 
-			addBox(m * scale(vec3(0.9, 1., 0.9)), c);
-			addBox(m * scale(vec3(1., 0.9, 1.)), c);
+			addBox(m * scale(vec3(0.7, 1., 0.7)), c);
+			addBox(m * scale(vec3(1., 0.7, 1.)), c);
 
 		} else if (coin < 0.7) {
 			
@@ -167,13 +167,13 @@ private:
 
 		} else {
 
-			float h = ofRandom(1.);
-			float w = ofRandom(0.45);
+			float h = ofRandom(0.5, 1.);
+			float w = ofRandom(0.1, 0.2);
 
 			for (int j = 0; j < 2; j++) {
 				for (int k = 0; k < 2; k++) {
 					mat4 tm = m * translate(vec3(0.25 + 0.5 * j, 0., 0.25 + 0.5 * k));
-					tm = tm * scale(vec3(ofRandom(0.45), h, ofRandom(0.45)));
+					tm = tm * scale(vec3(w, h, w));
 					addBox(tm, c);
 				}
 			}

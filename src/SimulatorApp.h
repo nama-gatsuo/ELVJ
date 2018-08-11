@@ -27,7 +27,6 @@ public:
 		for (int i = 0; i < 3; i++) {
 			ofPushMatrix();
 			ofTranslate(16 * (i - 1), 0, 10);
-
 			rect.draw(OF_MESH_FILL);
 			ofPopMatrix();
 		}
@@ -37,8 +36,6 @@ public:
 		for (int i = 0; i < 3; i++) {
 			ofPushMatrix();
 			ofTranslate(16 * (i - 1), 0, -10);
-			//ofRotate(90, 1, 0, 0);
-
 			rect.draw(OF_MESH_FILL);
 			ofPopMatrix();
 		}

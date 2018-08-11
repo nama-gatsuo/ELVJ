@@ -31,7 +31,6 @@ public:
 private:
 	unsigned getNumProcessedPasses() const { return numProcessedPasses; }
 
-
 	unsigned currentReadFbo;
 	unsigned numProcessedPasses;
 	unsigned width, height;

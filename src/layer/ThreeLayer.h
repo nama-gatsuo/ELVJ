@@ -12,7 +12,7 @@ public:
 		processor.init(w, h);
 	}
 
-	const ofFbo& getFbo() const { return processor.getFbo(); }
+	virtual const ofFbo& getFbo() const { return processor.getFbo(); }
 
 	virtual void render() {
 		processor.update(world->getCam());
@@ -33,11 +33,22 @@ protected:
 class EdgeThreeLayer : public ThreeLayer {
 public:
 	EdgeThreeLayer(int w, int h) : ThreeLayer(w, h) {
-		auto e = processor.createPass<EdgePass>();
-		e->setEdgeColor(ofFloatColor(1.));
-		e->setBackground(ofFloatColor(0.));
-		e->setUseReadColor(false);
+		edge = processor.createPass<EdgePass>();
+		edge->setEdgeColor(ofFloatColor(1.));
+		edge->setBackground(ofFloatColor(0.));
+		edge->setUseReadColor(false);
 	}
+
+	void render() {
+		ofFloatColor c;
+		c.setHsb(ofRandom(1.), 1., 1.);
+		edge->setEdgeColor(c);
+
+		ThreeLayer::render();
+	}
+
+private:
+	EdgePass::Ptr edge;
 };
 
 // photo realistc 3D layer
@@ -45,8 +56,8 @@ class PRThreeLayer : public ThreeLayer {
 public:
 	PRThreeLayer(int w, int h) : ThreeLayer(w, h) {
 		auto s = processor.createPass<SsaoPass>();
-		s->setDarkness(1.);
-		s->setOcculusionRadius(3.);
+		s->setDarkness(.5);
+		s->setOcculusionRadius(1.);
 		processor.createPass<HdrBloomPass>();
 	}
 };
