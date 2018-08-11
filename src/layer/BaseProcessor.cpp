@@ -20,7 +20,7 @@ void BaseProcessor::init(unsigned w, unsigned h) {
 
 }
 
-void BaseProcessor::update(ofCamera& cam) {
+void BaseProcessor::update(const ofCamera& cam) {
 
 	for (auto pass : passes) {
 		if (pass->getEnabled()) {

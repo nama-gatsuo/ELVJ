@@ -11,7 +11,6 @@ uniform float seed;
 
 out vec4 vPosition;
 out float vDepth;
-out vec3 vNormal;
 out vec2 vTexCoord;
 out vec4 vColor;
 
@@ -23,7 +22,6 @@ void main(){
 
     vec4 viewPos = modelViewMatrix * vec4(p, 1.);
     vDepth = - viewPos.z * lds;
-    vNormal = (normalMatrix * normal).xyz;
     vTexCoord = texcoord;
     vColor = color;
     vPosition = viewPos;

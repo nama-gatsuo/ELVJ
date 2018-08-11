@@ -14,8 +14,8 @@ public:
 
 		const int initialSize = 128;
 
-		for (int w = 0; w < wn; w += initialSize) {
-			for (int h = 0; h < hn; h += initialSize) {
+		for (int w = - wn / 2; w < wn / 2; w += initialSize) {
+			for (int h = - hn; h < hn / 2; h += initialSize) {
 				subdivide(w, h, initialSize, 0);
 			}
 		}
@@ -26,7 +26,7 @@ public:
 		
 	}
 	
-	void draw(float lds) {
+	void draw(float lds) const {
 		shader.begin();
 		shader.setUniform1f("lds", lds);
 
@@ -44,7 +44,7 @@ private:
 	void subdivide(int x, int y, int size, int level) {
 		const int maxlevel = 2;
 
-		mat4 m = translate(vec3(x, 0, y)) * scale(vec3(size));
+		mat4 m = translate(vec3(x, 0, y)) * scale(vec3(size * 0.9));
 
 		if (level >= maxlevel) { 
 			tower(m);

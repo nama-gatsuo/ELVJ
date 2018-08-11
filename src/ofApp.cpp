@@ -1,10 +1,11 @@
 #include "ofApp.h"
 
-ofApp::Mode ofApp::mode = ofApp::SANDBOX;
+ofApp::Mode ofApp::mode = ofApp::PRODUCTION;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+	// create canvas fbo
 	ofDisableArbTex();
 	for (int i = 0; i < 2; i++) {
 		if (mode == PRODUCTION) {
@@ -15,27 +16,42 @@ void ofApp::setup(){
 	}
 	ofEnableArbTex();
 
+	// 3D world
+	world = std::make_shared<BaseWorld>(ofGetWidth() / 2, ofGetHeight());
+	world->addObject<CityObject>();
+
+	// layer mixer
+	mixer = ofPtr<Mixer>(new Mixer());
+
 	// layer 1
-	auto l1 = mixer.addLayer<ThreeLayer>();
+	auto l1 = mixer->addLayer<PRThreeLayer>();
+	l1->setWorld(world);
 	l1->setDrawArea(BaseLayer::LEFT);
-	l1->addObject<CityObject>();
 	l1->setAlpha(1.);
+
+	// layer 2
+	auto l2 = mixer->addLayer<EdgeThreeLayer>();
+	l2->setWorld(world);
+	l2->setDrawArea(BaseLayer::RIGHT);
+	l2->setAlpha(1.);
 
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
-	mixer.update();
+	mixer->update();
+	world->update();
 
 	screen[0].begin();
 	ofClear(0);
-	mixer.drawLeft();
+	mixer->drawLeft();
 	screen[0].end();
 
 	screen[1].begin();
 	ofClear(0);
-	mixer.drawRight();
+	mixer->drawRight();
+	world->getGBufferPointer()->debugDraw();
 	screen[1].end();
 
 }

@@ -6,9 +6,8 @@
 int main( ){
 
 	ofGLFWWindowSettings s;
-	
-	// main
 	s.setGLVersion(4, 1);
+
 	if (ofApp::mode == ofApp::PRODUCTION) {
 		
 		s.setSize(1920 * 2, 1080);
@@ -29,7 +28,7 @@ int main( ){
 		s.shareContextWith = mainWindow;
 		ofPtr<ofAppBaseWindow> simWindow = ofCreateWindow(s);
 
-		shared_ptr<ofApp> mainApp(new ofApp);
+		shared_ptr<ofApp> mainApp(new ofApp());
 		shared_ptr<SimulatorApp> simApp(new SimulatorApp);
 		simApp->mainApp = mainApp;
 		

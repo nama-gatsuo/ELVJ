@@ -9,7 +9,7 @@ public:
 
 	void init(unsigned w = ofGetWidth(), unsigned h = ofGetHeight());
 
-	void update(ofCamera& cam);
+	void update(const ofCamera& cam);
 
 	void draw(float x, float y, float w, float h) const;
 	float getWidth() const { return width; }
@@ -24,7 +24,7 @@ public:
 
 	ofPtr<GBuffer> getGBuffer() { return gbuffer; }
 	void setGBuffer(ofPtr<GBuffer> pGBuffer) { gbuffer = pGBuffer; }
-	ofFbo& getFbo() { return pingPong[currentReadFbo]; }
+	const ofFbo& getFbo() const { return pingPong[currentReadFbo]; }
 	void render(bool renderFlag = false);
 	void render(ofFbo& fbo);
 

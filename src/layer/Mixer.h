@@ -49,7 +49,6 @@ public:
 	}
 
 private:
-
 	std::vector<ofPtr<BaseLayer>> layers;
 
 };

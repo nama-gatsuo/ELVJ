@@ -2,8 +2,9 @@
 
 #include "ofMain.h"
 #include "Mixer.h"
-#include "ThreeLayer.h"
-#include "CityObject.h"
+#include "Layers.h"
+#include "Objects.h"
+#include "BaseWorld.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -19,6 +20,7 @@ public:
 	const ofFbo& getRearFbo() { return screen[1]; }
 
 private:
-	Mixer mixer;
+	ofPtr<BaseWorld> world;
+	ofPtr<Mixer> mixer;
 	ofFbo screen[2];
 };

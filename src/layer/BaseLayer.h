@@ -8,7 +8,7 @@ public:
 	BaseLayer(int w, int h) : alpha(0.) {}
 
 	virtual void render() = 0;
-	virtual ofFbo& getFbo() = 0;
+	virtual const ofFbo& getFbo() const = 0;
 
 	void setAlpha(float alpha) { this->alpha = alpha; }
 	float getAlpha() { return alpha; }
