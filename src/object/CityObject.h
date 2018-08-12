@@ -102,7 +102,7 @@ private:
 
 	void beam(const mat4& m) {
 
-		ofFloatColor c(0.2);
+		ofFloatColor c(0.3);
 		mat4 tm(m);
 
 		if (ofRandom(1.) < 0.5) {
@@ -134,8 +134,8 @@ private:
 
 	void room(const mat4& m) {
 		
-		ofFloatColor c(0.1);
-		ofFloatColor lc(1.1);
+		ofFloatColor c(0.2);
+		ofFloatColor lc(1.0, 0.9, 1.2);
 
 		float coin = ofRandom(1.);
 

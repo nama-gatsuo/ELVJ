@@ -37,9 +37,15 @@ public:
 		if (time > TWO_PI) time -= TWO_PI;
 
 		if (state == STRAIGHT) {
-			float z = -time * 96. + 256.;
 
-			setGlobalPosition(vec3(0, 0, z));
+			vec3 p = getGlobalPosition();
+			float x = sin(time) * 100.;
+			float y = (cos(time * 0.03) + 1.4) * 10.;
+			float z = -time * 96. + 256.;
+			vec3 np(x, y, z);
+			vec3 dir = np - p;
+			setGlobalPosition(np);
+			lookAt(np + dir, vec3(0, 1, 0));
 
 		} else if (state == ARROUND) {
 			

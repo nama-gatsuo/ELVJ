@@ -13,6 +13,10 @@ public:
 	}
 
 	virtual const ofFbo& getFbo() const { return processor.getFbo(); }
+	
+	void draw() const {
+		getFbo().draw(0, 0);
+	}
 
 	virtual void render() {
 		processor.update(world->getCam());
@@ -33,16 +37,16 @@ protected:
 class EdgeThreeLayer : public ThreeLayer {
 public:
 	EdgeThreeLayer(int w, int h) : ThreeLayer(w, h) {
+		ofFloatColor pink;
+		pink.setHex(0xfd637c);
+
 		edge = processor.createPass<EdgePass>();
-		edge->setEdgeColor(ofFloatColor(1.));
-		edge->setBackground(ofFloatColor(0.));
+		edge->setEdgeColor(ofFloatColor(.0));
+		edge->setBackground(pink);
 		edge->setUseReadColor(false);
 	}
 
 	void render() {
-		ofFloatColor c;
-		c.setHsb(ofRandom(1.), 1., 1.);
-		edge->setEdgeColor(c);
 
 		ThreeLayer::render();
 	}
@@ -58,6 +62,12 @@ public:
 		auto s = processor.createPass<SsaoPass>();
 		s->setDarkness(.5);
 		s->setOcculusionRadius(1.);
+
 		processor.createPass<HdrBloomPass>();
+	
+		auto d = processor.createPass<DofPass>();
+		d->setAperture(0.02);
+		d->setFocus(0.1);
+		d->setMaxBlur(0.1);
 	}
 };

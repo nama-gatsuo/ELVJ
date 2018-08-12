@@ -12,7 +12,7 @@ public:
 
 	void update() {
 
-		while (receiver.isListening()) {
+		while (receiver.hasWaitingMessages()) {
 			ofxOscMessage msg;
 			receiver.getNextMessage(msg);
 
@@ -33,7 +33,8 @@ public:
 				
 				int id = std::stoi(dir[2]);
 				float a = msg.getArgAsFloat(0);
-				ofNotifyEvent(Events::LayerAlphaChange, LayerAlpha(id, a));
+				LayerAlpha la(id, a);
+				ofNotifyEvent(Events::LayerAlphaChange, la);
 
 			} else if (dir[1] == "obj") {
 				

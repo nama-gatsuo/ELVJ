@@ -10,8 +10,8 @@ int main( ){
 
 	if (ofApp::mode == ofApp::PRODUCTION) {
 		
-		s.setSize(1920 * 2, 1080);
-		s.setPosition(glm::vec2(1921, 0));
+		s.setSize(Constants::screenSize.x * 2, Constants::screenSize.y);
+		s.setPosition(glm::vec2(Constants::screenSize.x, 0));
 		s.decorated = false;
 		s.multiMonitorFullScreen = true;
 		
@@ -20,7 +20,7 @@ int main( ){
 
 	} else if (ofApp::mode == ofApp::SANDBOX) {
 		
-		s.setSize(1920, 540);
+		s.setSize(Constants::screenSize.x / 2, Constants::screenSize.y / 2);
 		
 		ofPtr<ofAppBaseWindow> mainWindow = ofCreateWindow(s);
 		

@@ -13,8 +13,8 @@ public:
 		
 		ofBackground(0);
 		
-		ofEnableDepthTest();
-		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		ofDisableDepthTest();
+		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	}
 
 	void update() {}
