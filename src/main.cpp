@@ -20,7 +20,7 @@ int main( ){
 
 	} else if (ofApp::mode == ofApp::SANDBOX) {
 		
-		s.setSize(Constants::screenSize.x / 2, Constants::screenSize.y / 2);
+		s.setSize(Constants::screenSize.x, Constants::screenSize.y / 2);
 		
 		ofPtr<ofAppBaseWindow> mainWindow = ofCreateWindow(s);
 		

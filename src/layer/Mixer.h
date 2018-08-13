@@ -10,7 +10,7 @@ class Mixer {
 public:
 	enum Mode { ALPHA_BLEND, TWO_CHAN_MIX };
 	struct State {
-		State() : mode(ALPHA_BLEND), mixLayer(0), mix{ 0,0 } {}
+		State() : mode(ALPHA_BLEND), mixLayer(0), mix{ 0, 0 } {}
 		State(const State& copy) : mode(copy.mode), mixLayer(copy.mixLayer), mix{ copy.mix[0], copy.mix[1] } {}
 
 		Mode mode;
@@ -21,8 +21,9 @@ public:
 	Mixer() {
 
 		mixShader.load("shader/vfx/passThru.vert", "shader/pfx/TwoChanMix.frag");
-
+		
 		ofAddListener(Events::LayerAlphaChange, this, &Mixer::onChangeLayerAlpha);
+		
 	}
 
 	~Mixer() {
@@ -50,7 +51,7 @@ public:
 				for (auto layer : layers) {
 					if (layer->isActive() && layer->isDrawIn(i)) {
 						ofSetColor(255, 255 * layer->getAlpha());
-						layer->getFbo().draw(0, 0, Constants::screenSize.x, Constants::screenSize.y);
+						layer->getFbo().draw(0, 0);
 					}
 				}
 				
@@ -61,7 +62,7 @@ public:
 				mixShader.setUniformTexture("tex1", layers[state[i].mix[0]]->getFbo().getTexture(0), 1);
 				mixShader.setUniformTexture("tex2", layers[state[i].mix[1]]->getFbo().getTexture(0), 2);
 
-				layers[state[i].mixLayer]->getFbo().draw(0, 0, Constants::screenSize.x, Constants::screenSize.y);
+				layers[state[i].mixLayer]->getFbo().draw(0, 0);
 				mixShader.end();
 
 			} break;
@@ -77,7 +78,6 @@ public:
 		layers.push_back(layer);
 		return layer;
 	}
-
 
 	const size_t getSize() const {
 		return layers.size();

@@ -6,6 +6,7 @@
 #include "Objects.h"
 #include "BaseWorld.h"
 #include "DataListener.h"
+#include "PostEffects.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -24,4 +25,5 @@ private:
 	ofPtr<BaseWorld> world;
 	ofPtr<Mixer> mixer;
 	ofFbo screen[2];
+	PostEffects pfx;
 };

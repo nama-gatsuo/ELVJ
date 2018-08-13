@@ -49,7 +49,6 @@ void BaseProcessor::render(bool renderFlag) {
 			currentReadFbo = 1 - currentReadFbo;
 			numProcessedPasses++;
 		}
-
 	}
 
 	if (renderFlag) draw(0, 0, getWidth(), getHeight());
@@ -66,14 +65,16 @@ void BaseProcessor::render(ofFbo& fbo) {
 	ofSetColor(255, 255, 255);
 
 	numProcessedPasses = 0;
+
 	for (auto pass : passes) {
 		if (pass->getEnabled()) {
+
 			if (numProcessedPasses == 0) pass->render(fbo, pingPong[1 - currentReadFbo], *gbuffer);
 			else pass->render(pingPong[currentReadFbo], pingPong[1 - currentReadFbo], *gbuffer);
+			
 			currentReadFbo = 1 - currentReadFbo;
 			numProcessedPasses++;
 		}
-
 	}
 
 	draw(0, 0, getWidth(), getHeight());
