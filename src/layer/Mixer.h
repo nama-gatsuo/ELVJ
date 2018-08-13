@@ -1,6 +1,7 @@
 #pragma once
 #include "vector"
 #include "BaseLayer.h"
+#include "MixLayer.h"
 #include "ofTypes.h"
 #include "ofGraphics.h"
 #include "Events.h"
@@ -8,68 +9,79 @@
 
 class Mixer {
 public:
-	enum Mode { ALPHA_BLEND, TWO_CHAN_MIX };
-	struct State {
-		State() : mode(ALPHA_BLEND), mixLayer(0), mix{ 0, 0 } {}
-		State(const State& copy) : mode(copy.mode), mixLayer(copy.mixLayer), mix{ copy.mix[0], copy.mix[1] } {}
-
-		Mode mode;
-		int mixLayer;
-		int mix[2];
-	};
 
 	Mixer() {
+		layersInBin[0].assign(2, ofPtr<BaseLayer>());
+		layersInBin[1].assign(2, ofPtr<BaseLayer>());
+		alphas.assign(5, 0.);
 
-		mixShader.load("shader/vfx/passThru.vert", "shader/pfx/TwoChanMix.frag");
-		
 		ofAddListener(Events::LayerAlphaChange, this, &Mixer::onChangeLayerAlpha);
+		ofAddListener(Events::DrawAreaStateChange, this, &Mixer::onStateChange);
 		
+		auto l0 = addLayer<ConstantsLayer>();
+		
+		setLayerInBin(0, 0, 0);
+		setLayerInBin(1, 0, 0);
+		setLayerInBin(0, 1, 0);
+		setLayerInBin(1, 1, 0);
+
+		mixLayer = std::make_shared<MixLayer>(Constants::renderSize.x, Constants::renderSize.y);
+		mixLayer->setLayer(0, l0);
+		mixLayer->setLayer(1, l0);
+		mixLayer->setMixLayer(l0);
 	}
 
 	~Mixer() {
 		ofRemoveListener(Events::LayerAlphaChange, this, &Mixer::onChangeLayerAlpha);
+		ofRemoveListener(Events::DrawAreaStateChange, this, &Mixer::onStateChange);
 	}
 
 	void onChangeLayerAlpha(LayerAlpha& e) {
-		if (hasData(e.layer)) layers[e.layer]->setAlpha(e.alpha);
+		alphas[e.layer] = e.alpha;
+		ofLogNotice() << "change alpha: " << e.alpha;
 	}
 
+	void onStateChange(DrawAreaState& state) {
+		ofLogNotice() << "bin: " << state.binId << " layer: " << state.layerId;
+
+		if (state.binId == 0) {
+			mixLayer->setMixLayer(layers[state.layerId]);
+		} else if (state.binId <= 2) {
+			mixLayer->setLayer(state.binId - 1, layers[state.layerId]);
+		} else if (state.binId <= 4) {
+			layersInBin[0][state.binId - 3]->setDrawArea(state.binId, false);
+			layersInBin[0][state.binId - 3] = layers[state.layerId];
+			layersInBin[0][state.binId - 3]->setDrawArea(state.binId, true);
+		} else if (state.binId <= 6) {
+			layersInBin[1][state.binId - 5]->setDrawArea(state.binId, false);
+			layersInBin[1][state.binId - 5] = layers[state.layerId];
+			layersInBin[1][state.binId - 5]->setDrawArea(state.binId, true);
+		}
+	}
 
 	void update() {
+		if (alphas[0] > 0.001) {
+			mixLayer->render();
+		}
+
 		for (auto layer : layers) {
-			if (layer->isActive()) {
-				if (layer->isActive()) layer->render();
-			}
+			if (layer != nullptr && layer->isActive()) layer->render();
 		}
 	}
 
 	void drawIn(int i) {
-		// simple layering
-
-		switch (state[i].mode) {
-			case ALPHA_BLEND: {
-				for (auto layer : layers) {
-					if (layer->isActive() && layer->isDrawIn(i)) {
-						ofSetColor(255, 255 * layer->getAlpha());
-						layer->getFbo().draw(0, 0);
-					}
-				}
-				
-			} break;
-			case TWO_CHAN_MIX: {
-				
-				mixShader.begin();
-				mixShader.setUniformTexture("tex1", layers[state[i].mix[0]]->getFbo().getTexture(0), 1);
-				mixShader.setUniformTexture("tex2", layers[state[i].mix[1]]->getFbo().getTexture(0), 2);
-
-				layers[state[i].mixLayer]->getFbo().draw(0, 0);
-				mixShader.end();
-
-			} break;
-			default: break;
+		
+		if (i == 0 && alphas[0] > 0.001) {
+			ofSetColor(255, 255 * alphas[0]);
+			mixLayer->draw();
 		}
-		
-		
+
+		for (int j = 0; j < 2; j++) {
+			if (layersInBin[i][j] != nullptr && alphas[1 + i * 2 + j] > 0.001) {
+				ofSetColor(255, 255 * alphas[1 + i * 2 + j]);
+				layersInBin[i][j]->draw();
+			}
+		}
 	}
 
 	template<class T>
@@ -87,17 +99,24 @@ public:
 		return id < layers.size() && id >= 0;
 	}
 
-	bool setMixerState(int i, const State& state) {
-		if (hasData(state.mixLayer) && hasData(state.mix[0]) && hasData(state.mix[1])) {
-			this->state[i] = state;
-		} else {
-			ofLogWarning() << "specified layer is out of range";
+	void setLayerInBin(int leftOrRight, int zeroOrOne, int layerId) {
+		int id = 3 + leftOrRight * 2 + zeroOrOne;
+		if (layersInBin[leftOrRight][zeroOrOne] != nullptr) {
+			layersInBin[leftOrRight][zeroOrOne]->setDrawArea(id, false);
 		}
+		layersInBin[leftOrRight][zeroOrOne] = layers[layerId];
+		layersInBin[leftOrRight][zeroOrOne]->setDrawArea(id, true);
 	}
 
 private:
+ 
+	std::vector<ofPtr<BaseLayer>> layersInBin[2];
+	std::vector<float> alphas;
+
+	// layers
+	// Constants, World_PtotoReal, World_Edge, Tex_Fourier, Tex_Noise
 	std::vector<ofPtr<BaseLayer>> layers;
-	State state[2];
-	ofShader mixShader;
+
+	ofPtr<MixLayer> mixLayer;
 
 };

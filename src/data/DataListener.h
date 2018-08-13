@@ -22,24 +22,53 @@ public:
 			if (dir[1] == "audio") {
 				
 				if (dir[2] == "bang") {
-				
+					
 
 
 				} else if (dir[2] == "vol") {
+					
+					dir[2] == "vol";
 					volume = msg.getArgAsFloat(0);
+
 				}
 
-			} else if (dir[1] == "layer") {
+			} else if (dir[1] == "midi") {
 				
-				int id = std::stoi(dir[2]);
-				float a = msg.getArgAsFloat(0);
-				LayerAlpha la(id, a);
-				ofNotifyEvent(Events::LayerAlphaChange, la);
+				if (dir[2] == "ctrl") {
+					
 
-			} else if (dir[1] == "obj") {
+				} else if (dir[2] == "note") {
+					
+					// midi key assign	
+				}
+
+			} else if (dir[1] == "bin") {
 				
-				int id = std::stoi(dir[2]);
-				ofNotifyEvent(Events::ToggleObject, id);
+				// for the objects in world
+				DrawAreaState state;
+				state.binId = std::stoi(dir[2]);
+				state.layerId = msg.getArgAsInt(0);
+				
+				ofNotifyEvent(Events::DrawAreaStateChange, state);
+
+				
+
+			} else if (dir[1] == "layer") {
+				if (dir[2] == "alpha") {
+
+					int id = msg.getArgAsInt(0);
+					float a = ofMap(msg.getArgAsInt(1), 2, 128, 0., 1.);
+					
+					LayerAlpha la(id, a);
+					ofNotifyEvent(Events::LayerAlphaChange, la);
+					
+				}
+			} else if (dir[1] == "mix") {
+				
+				if (dir[2] == "thres") {
+					float thres = ofMap(msg.getArgAsInt(0), 1, 126, 0., 1.);
+					ofNotifyEvent(Events::MixThresChange, thres);
+				}
 
 			}
 

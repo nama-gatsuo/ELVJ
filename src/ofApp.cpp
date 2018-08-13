@@ -1,6 +1,6 @@
 #include "ofApp.h"
 
-ofApp::Mode ofApp::mode = ofApp::SANDBOX;
+ofApp::Mode ofApp::mode = ofApp::PRODUCTION;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -26,44 +26,28 @@ void ofApp::setup(){
 	// post effects
 	pfx.init(Constants::renderSize.x, Constants::renderSize.y);
 
-	// layer 1
+	// layer 1: photoreal world
 	auto l1 = mixer->addLayer<PRThreeLayer>();
 	l1->setWorld(world);
-	l1->toggleDrawIn(BaseLayer::LEFT);
-	l1->setAlpha(0.);
 
-	// layer 2
+	// layer 2: edge world
 	auto l2 = mixer->addLayer<EdgeThreeLayer>();
 	l2->setWorld(world);
-	l2->toggleDrawIn(BaseLayer::RIGHT);
-	l2->setAlpha(0.);
-
+	
 	// layer 3
-	auto l3 = mixer->addLayer<RandomTwoLayer>();
-	//l3->toggleDrawIn(BaseLayer::LEFT);
-	l3->toggleDrawIn(BaseLayer::RIGHT);
-	l3->setAlpha(0.);
+	auto l3 = mixer->addLayer<FourieLayer>();
 
 	// layer 4
-	auto l4 = mixer->addLayer<FourieLayer>();
-	l4->toggleDrawIn(BaseLayer::LEFT);
-	//l4->toggleDrawIn(BaseLayer::RIGHT);
-	l4->setAlpha(0.);
+	auto l4 = mixer->addLayer<RandomTwoLayer>();
 
 	// layer 5
 	auto l5 = mixer->addLayer<RayMarchLayer>();
-	l5->toggleDrawIn(BaseLayer::LEFT);
-	l5->setAlpha(1.);
-
-	/*
-	Mixer::State s;
-	s.mode = Mixer::Mode::TWO_CHAN_MIX;
-	s.mixLayer = 3;
-	s.mix[0] = 1;
-	s.mix[1] = 0;
-	mixer->setMixerState(BaseLayer::LEFT, s);
-	*/
-
+	
+	mixer->setLayerInBin(0, 0, 0);
+	mixer->setLayerInBin(0, 1, 0);
+	mixer->setLayerInBin(1, 1, 0);
+	mixer->setLayerInBin(1, 1, 0);
+	
 }
 
 //--------------------------------------------------------------

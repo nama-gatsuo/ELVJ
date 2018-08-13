@@ -16,6 +16,23 @@ protected:
 
 };
 
+class ConstantsLayer : public TwoLayer {
+public:
+	ConstantsLayer(int w, int h) : TwoLayer(w, h) {
+		
+	}
+
+	void render() {
+		fbo.begin();
+		ofClear(0);
+		fbo.end();
+	}
+
+private:
+
+
+};
+
 class FourieLayer : public TwoLayer {
 public:
 	FourieLayer(int w, int h) : TwoLayer(w, h) {
