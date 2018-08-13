@@ -23,7 +23,19 @@ public:
 				
 				if (dir[2] == "bang") {
 					
+					int id = 0;
+					
+					if (dir[3] == "bass") {
+						id = 0;
+					} else if (dir[3] == "high") {
+						id = 1;
+					} else if (dir[3] == "tempo") {
+						id = 2;
+					} else if (dir[3] == "manual") {
+						id = 3;
+					}
 
+					ofNotifyEvent(Events::Bang, id);
 
 				} else if (dir[2] == "vol") {
 					
@@ -37,9 +49,12 @@ public:
 				if (dir[2] == "ctrl") {
 					
 
+
 				} else if (dir[2] == "note") {
 					
-					// midi key assign	
+					// midi key assign
+
+
 				}
 
 			} else if (dir[1] == "bin") {
@@ -50,8 +65,6 @@ public:
 				state.layerId = msg.getArgAsInt(0);
 				
 				ofNotifyEvent(Events::DrawAreaStateChange, state);
-
-				
 
 			} else if (dir[1] == "layer") {
 				if (dir[2] == "alpha") {
@@ -68,6 +81,24 @@ public:
 				if (dir[2] == "thres") {
 					float thres = ofMap(msg.getArgAsInt(0), 1, 126, 0., 1.);
 					ofNotifyEvent(Events::MixThresChange, thres);
+				}
+
+			} else if (dir[1] == "obj") {
+				
+				int id = std::stoi(dir[2]);
+				ofNotifyEvent(Events::ToggleObject, id);
+
+			} else if (dir[1] == "bangState") {
+				if (dir[2] == "obj") {
+					
+					int id = msg.getArgAsInt(0);
+					int bangId = msg.getArgAsInt(1);
+
+				} else if (dir[2] == "layer") {
+					
+					int id = msg.getArgAsInt(0);
+					int bangId = msg.getArgAsInt(1);
+				
 				}
 
 			}

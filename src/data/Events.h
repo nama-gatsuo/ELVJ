@@ -12,10 +12,12 @@ struct DrawAreaState {
 	int layerId;
 };
 
+
 class Events {
 public:
 	static ofEvent<LayerAlpha> LayerAlphaChange;
 	static ofEvent<int> ToggleObject;
 	static ofEvent<DrawAreaState> DrawAreaStateChange;
 	static ofEvent<float> MixThresChange;
+	static ofEvent<int> Bang;
 };

@@ -70,11 +70,6 @@ public:
 	}
 
 	void drawIn(int i) {
-		
-		if (i == 0 && alphas[0] > 0.001) {
-			ofSetColor(255, 255 * alphas[0]);
-			mixLayer->draw();
-		}
 
 		for (int j = 0; j < 2; j++) {
 			if (layersInBin[i][j] != nullptr && alphas[1 + i * 2 + j] > 0.001) {
@@ -82,6 +77,12 @@ public:
 				layersInBin[i][j]->draw();
 			}
 		}
+
+		if (i == 0 && alphas[0] > 0.001) {
+			ofSetColor(255, 255 * alphas[0]);
+			mixLayer->draw();
+		}
+
 	}
 
 	template<class T>
