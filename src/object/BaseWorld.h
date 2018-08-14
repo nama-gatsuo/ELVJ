@@ -42,7 +42,7 @@ public:
 
 	template<class T>
 	ofPtr<T> addObject() {
-		ofPtr<T> obj = std::make_shared<T>();
+		ofPtr<T> obj = std::make_shared<T>(objects.size());
 		objects.push_back(obj);
 		return obj;
 	}

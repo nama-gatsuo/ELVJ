@@ -5,7 +5,7 @@ using namespace glm;
 
 class CityObject : public BaseObject {
 public:
-	CityObject() : BaseObject() {
+	CityObject(int id) : BaseObject(id) {
 		
 		shader.load("shader/scene/broken");
 
@@ -35,7 +35,7 @@ public:
 		shader.end();
 	}
 
-	void bang() {
+	void bang(int& id) {
 		
 	}
 

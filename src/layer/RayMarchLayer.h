@@ -7,7 +7,7 @@
 
 class RayMarchLayer : public TwoLayer {
 public:
-	RayMarchLayer(int w, int h) : TwoLayer(w, h) {
+	RayMarchLayer(const glm::ivec2& size, int id) : TwoLayer(size, id) {
 		shader.load("shader/vfx/passThru.vert", "shader/scene/raymarch/Tgrad.frag");
 	}
 

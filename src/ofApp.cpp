@@ -1,6 +1,6 @@
 #include "ofApp.h"
 
-ofApp::Mode ofApp::mode = ofApp::PRODUCTION;
+ofApp::Mode ofApp::mode = ofApp::SANDBOX;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -11,6 +11,7 @@ void ofApp::setup(){
 		if (mode == PRODUCTION) {
 			screen[i].allocate(Constants::renderSize.x, Constants::renderSize.y, GL_RGBA);
 		} else {
+			
 			screen[i].allocate(Constants::renderSize.x, Constants::renderSize.y, GL_RGBA);
 		}
 	}

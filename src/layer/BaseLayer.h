@@ -7,14 +7,17 @@ class BaseLayer {
 public:
 	enum DrawArea { LEFT = 0, RIGHT = 1, MIX = 2 };
 
-	BaseLayer(int w, int h) {
+	BaseLayer(const glm::ivec2& size, int id) : id(id) {
 		activeInBin.assign(7, false);
 		bangFlags.assign(4, false);
+
 		ofAddListener(Events::Bang, this, &BaseLayer::bang);
+		ofAddListener(Events::ToggleBangStateLayer, this, &BaseLayer::toggleBangState);
 	}
 	
 	~BaseLayer() {
 		ofRemoveListener(Events::Bang, this, &BaseLayer::bang);
+		ofRemoveListener(Events::ToggleBangStateLayer, this, &BaseLayer::toggleBangState);
 	}
 
 	virtual void render() = 0;
@@ -30,11 +33,14 @@ public:
 		return false;
 	}
 
-	void toggleReactBang(int id) {
-		bangFlags[id] = !bangFlags[id];
+	void toggleBangState(BangStateLayer& state) {
+		if (state.id == id) {
+			bangFlags[state.chan] = !bangFlags[state.chan];
+		}
 	}
 
 private:
-	vector<bool> activeInBin;
+	const int id;
+	std::vector<bool> activeInBin;
 	std::vector<bool> bangFlags;
 };

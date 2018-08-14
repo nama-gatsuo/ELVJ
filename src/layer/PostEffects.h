@@ -48,24 +48,18 @@ class PostEffects {
 public:
 	using Ptr = std::shared_ptr<PostEffects>;
 	PostEffects() {
-		ofAddListener(ofEvents().keyPressed, this, &PostEffects::onKeyPressed);
-		ofAddListener(ofEvents().keyReleased, this, &PostEffects::onKeyReleased);
+		ofAddListener(Events::TogglePfx, this, &PostEffects::toggle);
+		
 	}
 	~PostEffects() {
-		ofRemoveListener(ofEvents().keyPressed, this, &PostEffects::onKeyPressed);
-		ofRemoveListener(ofEvents().keyReleased, this, &PostEffects::onKeyReleased);
+		ofRemoveListener(Events::TogglePfx, this, &PostEffects::toggle);
 	}
 	
-	void onKeyPressed(ofKeyEventArgs& key) {
-		if (key.key == 'a') {
-			glitch->setEnabled(true);
+	void toggle(int& id) {
+		if (id < passes.size()) {
+			passes[id]->setEnabled(!passes[id]->getEnabled());
 		}
-	}
-
-	void onKeyReleased(ofKeyEventArgs& key) {
-		if (key.key == 'a') {
-			glitch->setEnabled(false);
-		}
+		
 	}
 
 	void init(unsigned w = ofGetWidth(), unsigned h = ofGetHeight()) {

@@ -3,22 +3,23 @@
 
 class TwoLayer : public BaseLayer {
 public:
-	TwoLayer(int w, int h) : BaseLayer(w, h) {
-		fbo.allocate(w, h, GL_RGBA);
+	TwoLayer(const glm::ivec2& size, int id) : BaseLayer(size, id) {
+		fbo.allocate(size.x, size.y, GL_RGBA);
 	}
 	
 	const ofFbo& getFbo() const { return fbo; }
 	void draw() const { fbo.draw(0, 0); }
 	virtual void render() = 0;
 
+	void bang(int& id) {}
+
 protected:
 	ofFbo fbo;
-
 };
 
 class ConstantsLayer : public TwoLayer {
 public:
-	ConstantsLayer(int w, int h) : TwoLayer(w, h) {
+	ConstantsLayer(const glm::ivec2& size, int id) : TwoLayer(size, id) {
 		
 	}
 
@@ -35,7 +36,7 @@ private:
 
 class FourieLayer : public TwoLayer {
 public:
-	FourieLayer(int w, int h) : TwoLayer(w, h) {
+	FourieLayer(const glm::ivec2& size, int id) : TwoLayer(size, id) {
 		shader.load("shader/vfx/passThru.vert", "shader/pfx/FourieTex.frag");
 	}
 
@@ -59,7 +60,7 @@ private:
 
 class RandomTwoLayer : public TwoLayer {
 public:
-	RandomTwoLayer(int w, int h) : TwoLayer(w, h) {}
+	RandomTwoLayer(const glm::ivec2& size, int id) : TwoLayer(size, id) {}
 
 	void render() {
 		const int offset = 200;

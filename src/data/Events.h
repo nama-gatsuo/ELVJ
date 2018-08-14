@@ -12,6 +12,17 @@ struct DrawAreaState {
 	int layerId;
 };
 
+struct AudioVolume {
+	int chan; float vol;
+};
+
+struct BangStateLayer {
+	int id; int chan;
+};
+
+struct BangStateObj {
+	int id; int chan;
+};
 
 class Events {
 public:
@@ -20,4 +31,10 @@ public:
 	static ofEvent<DrawAreaState> DrawAreaStateChange;
 	static ofEvent<float> MixThresChange;
 	static ofEvent<int> Bang;
+	static ofEvent<AudioVolume> AudioVolumeChange;
+
+	static ofEvent<BangStateObj> ToggleBangStateObj;
+	static ofEvent<BangStateLayer> ToggleBangStateLayer;
+	
+	static ofEvent<int> TogglePfx;
 };

@@ -25,7 +25,7 @@ public:
 		setLayerInBin(0, 1, 0);
 		setLayerInBin(1, 1, 0);
 
-		mixLayer = std::make_shared<MixLayer>(Constants::renderSize.x, Constants::renderSize.y);
+		mixLayer = std::make_shared<MixLayer>(Constants::renderSize, -1);
 		mixLayer->setLayer(0, l0);
 		mixLayer->setLayer(1, l0);
 		mixLayer->setMixLayer(l0);
@@ -87,7 +87,7 @@ public:
 
 	template<class T>
 	ofPtr<T> addLayer() {
-		ofPtr<T> layer = std::make_shared<T>(Constants::renderSize.x, Constants::renderSize.y);
+		ofPtr<T> layer = std::make_shared<T>(Constants::renderSize, layers.size());
 		layers.push_back(layer);
 		return layer;
 	}

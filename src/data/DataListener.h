@@ -39,21 +39,14 @@ public:
 
 				} else if (dir[2] == "vol") {
 					
-					dir[2] == "vol";
-					volume = msg.getArgAsFloat(0);
+					AudioVolume av;
+					av.chan = 0;
 
-				}
-
-			} else if (dir[1] == "midi") {
-				
-				if (dir[2] == "ctrl") {
+					if (dir[3] == "bass") av.chan = 0;
+					else if (dir[3] == "high") av.chan = 1;
 					
-
-
-				} else if (dir[2] == "note") {
-					
-					// midi key assign
-
+					av.vol = msg.getArgAsFloat(0);
+					ofNotifyEvent(Events::AudioVolumeChange, av);
 
 				}
 
@@ -89,17 +82,37 @@ public:
 				ofNotifyEvent(Events::ToggleObject, id);
 
 			} else if (dir[1] == "bangState") {
+				
 				if (dir[2] == "obj") {
-					
 					int id = msg.getArgAsInt(0);
 					int bangId = msg.getArgAsInt(1);
+				} else if (dir[2] == "layer") {
+					int id = msg.getArgAsInt(0);
+					int bangId = msg.getArgAsInt(1);
+				}
+
+			} else if (dir[1] == "togglebang") {
+				
+				int id = 0;
+				if (dir[2] == "obj") {
+					
+					BangStateObj bso;
+					bso.id = std::stoi(dir[3]);
+					bso.chan = msg.getArgAsInt(0);
+					ofNotifyEvent(Events::ToggleBangStateObj, bso);
 
 				} else if (dir[2] == "layer") {
 					
-					int id = msg.getArgAsInt(0);
-					int bangId = msg.getArgAsInt(1);
-				
+					BangStateLayer bsl;
+					bsl.id = std::stoi(dir[3]);
+					bsl.chan = msg.getArgAsInt(0);
+					ofNotifyEvent(Events::ToggleBangStateLayer, bsl);
 				}
+
+			} else if (dir[1] == "pfx") {
+				
+				int id = std::stoi(dir[2]);
+				ofNotifyEvent(Events::TogglePfx, id);
 
 			}
 

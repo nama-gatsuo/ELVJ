@@ -8,8 +8,8 @@ using namespace ofxDeferred;
 
 class ThreeLayer : public BaseLayer {
 public:
-	ThreeLayer(int w, int h) : BaseLayer(w, h) {
-		processor.init(w, h);
+	ThreeLayer(const glm::ivec2& size, int id) : BaseLayer(size, id) {
+		processor.init(size.x, size.y);
 	}
 
 	virtual const ofFbo& getFbo() const { return processor.getFbo(); }
@@ -28,6 +28,8 @@ public:
 		processor.setGBuffer(world->getGBufferPointer());
 	}
 
+	void bang(int& id) {}
+
 protected:
 	BaseProcessor processor;
 	ofPtr<BaseWorld> world; // 3d objects to share in ThreeLayer
@@ -36,7 +38,7 @@ protected:
 // edge detection 3D layer
 class EdgeThreeLayer : public ThreeLayer {
 public:
-	EdgeThreeLayer(int w, int h) : ThreeLayer(w, h) {
+	EdgeThreeLayer(const glm::ivec2& size, int id) : ThreeLayer(size, id) {
 		ofFloatColor pink;
 		pink.setHex(0xfd637c);
 
@@ -58,7 +60,7 @@ private:
 // photo realistc 3D layer
 class PRThreeLayer : public ThreeLayer {
 public:
-	PRThreeLayer(int w, int h) : ThreeLayer(w, h) {
+	PRThreeLayer(const glm::ivec2& size, int id) : ThreeLayer(size, id) {
 		auto s = processor.createPass<SsaoPass>();
 		s->setDarkness(.5);
 		s->setOcculusionRadius(1.);

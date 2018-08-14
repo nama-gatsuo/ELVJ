@@ -9,8 +9,8 @@
 class MixLayer : public BaseLayer {
 public:
 
-	MixLayer(int w, int h) : BaseLayer(w, h), threshold(0.5) {
-		fbo.allocate(w, h, GL_RGBA);
+	MixLayer(const glm::ivec2& size, int id) : BaseLayer(size, id), threshold(0.5) {
+		fbo.allocate(size.x, size.y, GL_RGBA);
 		shader.load("shader/vfx/passThru.vert", "shader/pfx/TwoChanMix.frag");
 		
 		layers[0] = layers[1] = nullptr;
@@ -58,6 +58,8 @@ public:
 		this->mixLayer = mixLayer;
 		this->mixLayer->setDrawArea(0, true);
 	}
+
+	void bang(int& id) {}
 
 private:
 	ofFbo fbo;
