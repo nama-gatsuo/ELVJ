@@ -11,7 +11,7 @@ public:
 	void draw() const { fbo.draw(0, 0); }
 	virtual void render() = 0;
 
-	void bang(int& id) {}
+	virtual void bang(int& id) = 0;
 
 protected:
 	ofFbo fbo;
@@ -28,6 +28,8 @@ public:
 		ofClear(0);
 		fbo.end();
 	}
+
+	void bang(int& id) {}
 
 private:
 
@@ -54,6 +56,8 @@ public:
 		fbo.end();
 	}
 
+	void bang(int& id) {}
+
 private:
 	ofShader shader;
 };
@@ -79,5 +83,8 @@ public:
 		ofEndShape();
 		fbo.end();
 	}
+
+	void bang(int& id) {}
+
 
 };

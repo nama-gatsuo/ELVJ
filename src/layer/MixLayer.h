@@ -5,6 +5,7 @@
 #include "ofGraphics.h"
 #include "Events.h"
 #include "TwoLayer.h"
+#include "Util.h"
 
 class MixLayer : public BaseLayer {
 public:
@@ -59,7 +60,11 @@ public:
 		this->mixLayer->setDrawArea(0, true);
 	}
 
-	void bang(int& id) {}
+	void bang(int& id) {
+		if (bangFlags[id]) {
+			
+		}
+	}
 
 private:
 	ofFbo fbo;

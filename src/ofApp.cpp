@@ -42,7 +42,13 @@ void ofApp::setup(){
 	auto l4 = mixer->addLayer<RandomTwoLayer>();
 
 	// layer 5
-	auto l5 = mixer->addLayer<RayMarchLayer>();
+	auto l5 = mixer->addLayer<TgradLayer>();
+
+	// layer 6
+	auto l6 = mixer->addLayer<PseudoKnightyanLayer>();
+
+	// layer 7
+	auto l7 = mixer->addLayer <MandelboxLayer>();
 	
 	mixer->setLayerInBin(0, 0, 0);
 	mixer->setLayerInBin(0, 1, 0);

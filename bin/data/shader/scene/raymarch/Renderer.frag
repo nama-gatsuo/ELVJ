@@ -43,7 +43,7 @@ void main() {
     }
 
     float c = td * 0.01;
-    vec4 col = vec4(vec3(c) + vec3(0.1) * cnt * 0.12, 1.0);
+    vec4 col = vec4(vec3(c) + color.rgb * cnt * 0.15, 1.0);
     col.xyz = vec3(0.9) - col.xyz;
 
     // outputColor = vec4(st, 1., 1.);

@@ -38,9 +38,9 @@ public:
 			bangFlags[state.chan] = !bangFlags[state.chan];
 		}
 	}
-
+protected:
+	std::vector<bool> bangFlags;
 private:
 	const int id;
 	std::vector<bool> activeInBin;
-	std::vector<bool> bangFlags;
 };
