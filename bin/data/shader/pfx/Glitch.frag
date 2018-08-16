@@ -17,7 +17,7 @@ void main() {
 
 	const int maxiters = 80;
 	//int iters = int(mod(scaledT, float(maxiters)));
-    int iters = 69 + int(2. * sin(time));
+    int iters = 68 + int(5. * sin(time));
 	for (int i = 0; i < maxiters; i++) {
 		base *= 0.8 + (clamp((float(i < iters)) + (1.1/float(iters)) * vec4(vec2(res.x * dFdx(base.rb)), vec2(res.y * dFdy(base.ga))), 0.0, 1.0) * 0.25);
 	}

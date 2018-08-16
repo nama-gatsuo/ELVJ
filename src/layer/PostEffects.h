@@ -18,10 +18,58 @@ protected:
 	bool enabled;
 };
 
+class RGBSplitPFX : public PFX {
+public:
+	RGBSplitPFX(const glm::vec2& size) : PFX(size) {
+		shader.load("shader/vfx/passThru.vert", "shader/pfx/RgbSplit.frag");
+	}
+	void render(ofFbo& read, ofFbo& write) {
+
+		write.begin();
+		ofClear(0);
+
+		shader.begin();
+		shader.setUniform1f("rand", ofRandom(1.));
+		shader.setUniform2f("res", Constants::screenSize.x, Constants::screenSize.y);
+
+		read.draw(0, 0);
+		shader.end();
+
+		write.end();
+	}
+
+private:
+	ofShader shader;
+};
+
+class SlitScanPFX : public PFX {
+public:
+	SlitScanPFX(const glm::vec2& size) : PFX(size) {
+		shader.load("shader/vfx/passThru.vert", "shader/pfx/SlitScan.frag");
+	}
+
+	void render(ofFbo& read, ofFbo& write) {
+
+		write.begin();
+		ofClear(0);
+
+		shader.begin();
+		shader.setUniform1f("slit", ofRandom(40, 200));
+
+		read.draw(0, 0);
+		shader.end();
+
+		write.end();
+	}
+
+private:
+	ofShader shader;
+};
+
 class GlitchPFX : public PFX {
 public:
 	GlitchPFX(const glm::vec2& size) : PFX(size) {
-		shader.load("shader/vfx/passThru.vert", "shader/pfx/glitch.frag");
+		shader.load("shader/vfx/passThru.vert", "shader/pfx/Glitch.frag");
 	}
 
 	void render(ofFbo& read, ofFbo& write) {
@@ -154,10 +202,12 @@ public:
 		currentReadFbo = 0;
 
 		// create passes as default
-		glitch = createPass<GlitchPFX>();
 		createPass<MirrorCovPFX>();
 		createPass<ComplexCovPFX>();
+		createPass<GlitchPFX>();
 		createPass<ColorConvPFX>();
+		createPass<RGBSplitPFX>();
+		createPass<SlitScanPFX>();
 	}
 
 	void render(ofFbo& read, bool autoDraw = false) {

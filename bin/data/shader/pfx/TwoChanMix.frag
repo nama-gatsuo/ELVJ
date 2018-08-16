@@ -15,6 +15,7 @@ void main(){
         outputColor = texture(tex1, vTexCoord);
     } else {
         outputColor = texture(tex2, vTexCoord);
+        outputColor.rgb = vec3(1.) - outputColor.rgb;
     }
 
 }

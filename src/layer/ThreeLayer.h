@@ -43,8 +43,8 @@ public:
 		pink.setHex(0xfd637c);
 
 		edge = processor.createPass<EdgePass>();
-		edge->setEdgeColor(ofFloatColor(.0));
-		edge->setBackground(pink);
+		edge->setEdgeColor(pink);
+		edge->setBackground(ofFloatColor(.0));
 		edge->setUseReadColor(false);
 	}
 
@@ -61,6 +61,14 @@ private:
 class PRThreeLayer : public ThreeLayer {
 public:
 	PRThreeLayer(const glm::ivec2& size, int id) : ThreeLayer(size, id) {
+		auto sh = processor.createPass<ShadowLightPass>();
+		sh->setAmbientColor(ofFloatColor(0.1));
+		sh->setDiffuseColor(ofFloatColor(0.4, 0.5, 0.5));
+		sh->setDarkness(0.5);
+		sh->setDistance(400);
+		sh->setDirection(glm::vec3(1., -1., -1.5));
+		sh->setFar(768);
+
 		auto s = processor.createPass<SsaoPass>();
 		s->setDarkness(.5);
 		s->setOcculusionRadius(1.);
