@@ -38,7 +38,6 @@ public:
 
 	void onChangeLayerAlpha(LayerAlpha& e) {
 		alphas[e.layer] = e.alpha;
-		ofLogNotice() << "change alpha: " << e.alpha;
 	}
 
 	void onStateChange(DrawAreaState& state) {
@@ -70,19 +69,21 @@ public:
 	}
 
 	void drawIn(int i) {
-
+		ofPushStyle();
+		ofEnableBlendMode(OF_BLENDMODE_ADD);
 		for (int j = 0; j < 2; j++) {
 			if (layersInBin[i][j] != nullptr && alphas[1 + i * 2 + j] > 0.001) {
-				ofSetColor(255, 255 * alphas[1 + i * 2 + j]);
+				ofSetColor(256. * alphas[1 + i * 2 + j]);
 				layersInBin[i][j]->draw();
 			}
 		}
 
 		if (i == 0 && alphas[0] > 0.001) {
-			ofSetColor(255, 255 * alphas[0]);
+			ofSetColor(255, 255. * alphas[0]);
 			mixLayer->draw();
 		}
-
+		ofDisableBlendMode();
+		ofPopStyle();
 	}
 
 	template<class T>

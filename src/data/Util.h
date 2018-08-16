@@ -50,26 +50,28 @@ namespace Util {
 		float target; float current; float ratio;
 	};
 
-	class PhysicValue {
+	class PhysicVal {
 	public:
-		PhysicValue() : p(0), v(0), a(0.2), g(-0.003), min(0.), max(1.) {}
+		PhysicVal() : p(0), v(0), g(-0.01), min(0.), max(1.) {}
 
 		void update() {
-			v -= g;
-			v = clamp(v, -0.5f, 0.5f);
+			v += g;
+			v = clamp(v, -0.4f, 0.4f);
 			
 			p += v;
+			if (p < 0.) v = 0;
 			p = clamp(p, min, max);
+			
 		}
 		
 		void addForce() {
-			v += a;
+			v += 0.3f;
 		}
 
 		float get() { return p; }
 
 	private:
-		float p; float a; float v; float g;
+		float p; float v; float g;
 		float min; float max;
 	};
 

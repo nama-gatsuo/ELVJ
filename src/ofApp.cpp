@@ -5,6 +5,8 @@ ofApp::Mode ofApp::mode = ofApp::SANDBOX;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+	ofBackground(0);
+
 	// create canvas fbo
 	//ofDisableArbTex();
 	for (int i = 0; i < 2; i++) {
@@ -39,7 +41,7 @@ void ofApp::setup(){
 	auto l3 = mixer->addLayer<FourieLayer>();
 
 	// layer 4
-	auto l4 = mixer->addLayer<RandomTwoLayer>();
+	auto l4 = mixer->addLayer<NoiseLayer>();
 
 	// layer 5
 	auto l5 = mixer->addLayer<TgradLayer>();
@@ -67,7 +69,7 @@ void ofApp::update(){
 	// if three-layers are all inactive, this process is not necessary
 	world->update();
 
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	
 	screen[1].begin();
 	ofClear(0);
 	mixer->drawIn(BaseLayer::LEFT);
@@ -84,13 +86,14 @@ void ofApp::update(){
 	ofClear(0);
 	mixer->drawIn(BaseLayer::RIGHT);
 	screen[1].end();
-	ofDisableBlendMode();
+	
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 	// output
+	ofSetColor(255);
 	screen[0].draw(0, 0, Constants::screenSize.x, Constants::screenSize.y);
 	screen[1].draw(Constants::screenSize.x, 0, Constants::screenSize.x, Constants::screenSize.y);
 }

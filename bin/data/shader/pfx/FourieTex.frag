@@ -6,7 +6,7 @@ uniform float time;
 
 int ns[2];   // num
 float rs[2]; // radius
-int fs[2];   // freq
+uniform int fs[2];   // freq
 float ps[2]; // power
 
 in vec2 vTexCoord;
@@ -34,13 +34,11 @@ float waveSum(int index, in vec2 uv) {
 void main(){
 
     ns[0] = 4;
-    fs[0] = 3;
     rs[0] = (cos(0.3-time*0.1) + 1.) * 1.11;
     ps[0] = sin(0.1-time) * 1.;
 
     ns[1] = 8;
     rs[1] = (cos(0.3-time*0.2)+ 1.) * 2.51;
-    fs[1] = 1;
     ps[1] = sin(time) * 1.;
 
     vec2 uv = (vTexCoord / res.y) * 2. - vec2(res) / res.y;

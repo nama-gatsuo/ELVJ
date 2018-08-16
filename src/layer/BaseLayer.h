@@ -10,7 +10,7 @@ public:
 	BaseLayer(const glm::ivec2& size, int id) : id(id) {
 		activeInBin.assign(7, false);
 		bangFlags.assign(4, false);
-		bangFlags[3] = true;
+		bangFlags[2] = true;
 
 		ofAddListener(Events::Bang, this, &BaseLayer::bang);
 		ofAddListener(Events::ToggleBangStateLayer, this, &BaseLayer::toggleBangState);
