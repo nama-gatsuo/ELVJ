@@ -102,6 +102,11 @@ public:
 				int id = std::stoi(dir[2]);
 				ofNotifyEvent(Events::TogglePfx, id);
 
+			} else if (dir[1] == "cam") {
+				
+				int id = msg.getArgAsInt(0);
+				ofNotifyEvent(Events::CameraModeChange, id);
+
 			}
 
 		}

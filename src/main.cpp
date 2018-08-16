@@ -11,7 +11,8 @@ int main( ){
 	if (ofApp::mode == ofApp::PRODUCTION) {
 		
 		s.setSize(Constants::screenSize.x * 2, Constants::screenSize.y);
-		s.setPosition(glm::vec2(Constants::screenSize.x, 0));
+		//s.setPosition(glm::vec2(Constants::screenSize.x, 0));
+		s.setPosition(glm::vec2(0, 0));
 		s.decorated = false;
 		s.multiMonitorFullScreen = true;
 		

@@ -10,7 +10,11 @@ public:
 	void setup() {
 		cam.setDistance(30);
 		rect = ofMesh::plane(16, 9, 2, 2);
-		
+		rect.setTexCoord(0, glm::vec2(0, 0));
+		rect.setTexCoord(1, glm::vec2(Constants::renderSize.x, 0));
+		rect.setTexCoord(2, glm::vec2(0, Constants::renderSize.y));
+		rect.setTexCoord(3, Constants::renderSize);
+
 		ofBackground(0);
 		
 		ofDisableDepthTest();

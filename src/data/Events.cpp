@@ -11,3 +11,4 @@ ofEvent<BangStateObj> Events::ToggleBangStateObj;
 ofEvent<BangStateLayer> Events::ToggleBangStateLayer;
 
 ofEvent<int> Events::TogglePfx;
+ofEvent<int> Events::CameraModeChange;

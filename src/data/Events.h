@@ -37,4 +37,5 @@ public:
 	static ofEvent<BangStateLayer> ToggleBangStateLayer;
 	
 	static ofEvent<int> TogglePfx;
+	static ofEvent<int> CameraModeChange;
 };

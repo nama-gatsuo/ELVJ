@@ -1,37 +1,32 @@
 #pragma once
 #include "ofCamera.h"
+#include "Util.h"
+#include "Events.h"
 
 using namespace glm;
 
 class StateCam : public ofCamera {
 public:
-	enum State { STRAIGHT, ARROUND, RAMBLE };
+	enum State { STRAIGHT = 0, ARROUND, RAMBLE };
 	
-	StateCam() : ofCamera(), time(0.), state(STRAIGHT), fovy(60) {
+	StateCam() : ofCamera(), time(0.), state(STRAIGHT), counter(0) {
 		// space size -256 - 256
 		setFarClip(512);
 		setNearClip(0.1);
-		setFov(fovy);
 		
-		ofAddListener(ofEvents().keyPressed, this, &StateCam::onKeyPressed);
+		ofAddListener(Events::CameraModeChange, this, &StateCam::onCameraModeChange);
 	}
 
 	~StateCam() {
-		ofRemoveListener(ofEvents().keyPressed, this, &StateCam::onKeyPressed);
+		ofRemoveListener(Events::CameraModeChange, this, &StateCam::onCameraModeChange);
 	}
 
-	void onKeyPressed(ofKeyEventArgs& key) {
+	void onCameraModeChange(int& state) {
 
-		if (key.key == 'a') changeState(STRAIGHT);
-		else if (key.key == 's') changeState(ARROUND);
-		else if (key.key == 'd') changeState(RAMBLE);
+		this->state = static_cast<State>(state);
 		
 	}
-
-	void changeState(State s) {
-		state = s;
-	}
-
+	
 	void update() {
 		time += 0.005;
 		if (time > TWO_PI) time -= TWO_PI;
@@ -48,9 +43,31 @@ public:
 			lookAt(np + dir, vec3(0, 1, 0));
 
 		} else if (state == ARROUND) {
-			
+
+			float radius = 128 + 128 * sin(time * 0.1);
+			float x = radius * sin(time);
+			float y = 32 * sin(time * 0.5) + 32;
+			float z = radius * cos(time);
+			setGlobalPosition(vec3(x, y, z));
+			lookAt(vec3(0));
+
 		} else if (state == RAMBLE) {
 			
+			counter += 1;
+			if (counter > 240) {
+				counter = 0;
+
+				float x = ofRandom(-256, 256);
+				float y = ofRandom(0, 64);
+				float z = ofRandom(-256, 256);
+
+				sp.to(vec3(x, y, z));
+			}
+			sp.update();
+			
+			setGlobalPosition(sp.get());
+			lookAt(vec3(0));
+
 		}
 	}
 
@@ -61,6 +78,6 @@ public:
 private:
 	float time;
 	State state;
-	float fovy;
-
+	int counter;
+	Util::SmoothPoint sp;
 };

@@ -1,6 +1,6 @@
-#version 410
+#version 420
 
-uniform sampler2DRect tex0;
+layout (binding = 0) uniform sampler2DRect tex0;
 
 uniform int isNega;
 uniform vec4 theme;
@@ -17,9 +17,11 @@ void main() {
     if (isNega == 1) {
         col.rgb = vec3(dot(vec3(1.0) - col.rgb, vec3(1.0)) / 3.0);
     } else {
-        col.rgb = vec3(dot(col.rgb, vec3(1.0)) / 3.0);
+        //col.rgb = vec3(dot(col.rgb, vec3(1.0)) / 3.0);
+        col.rgb = vec3(1.) - col.rgb;
     }
     col.rgb *= theme.rgb;
 
     outputColor = col;
+    //outputColor = vec4(vTexCoord, 1., 1.);
 }

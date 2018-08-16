@@ -6,16 +6,16 @@ ofApp::Mode ofApp::mode = ofApp::SANDBOX;
 void ofApp::setup(){
 
 	// create canvas fbo
-	ofDisableArbTex();
+	//ofDisableArbTex();
 	for (int i = 0; i < 2; i++) {
 		if (mode == PRODUCTION) {
 			screen[i].allocate(Constants::renderSize.x, Constants::renderSize.y, GL_RGBA);
 		} else {
-			
 			screen[i].allocate(Constants::renderSize.x, Constants::renderSize.y, GL_RGBA);
 		}
+		screen->getTextureReference().getTextureData().bFlipTexture = true;
 	}
-	ofEnableArbTex();
+	//ofEnableArbTex();
 
 	// 3D world
 	world = std::make_shared<BaseWorld>(Constants::renderSize.x, Constants::renderSize.y);
@@ -48,7 +48,7 @@ void ofApp::setup(){
 	auto l6 = mixer->addLayer<PseudoKnightyanLayer>();
 
 	// layer 7
-	auto l7 = mixer->addLayer <MandelboxLayer>();
+	auto l7 = mixer->addLayer<MandelboxLayer>();
 	
 	mixer->setLayerInBin(0, 0, 0);
 	mixer->setLayerInBin(0, 1, 0);
@@ -68,10 +68,16 @@ void ofApp::update(){
 	world->update();
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-	screen[0].begin();
+	screen[1].begin();
 	ofClear(0);
 	mixer->drawIn(BaseLayer::LEFT);
 	//ofDrawBitmapString("fps: " + std::to_string(ofGetFrameRate()), 10, 16);
+	screen[1].end();
+
+	screen[0].begin();
+	ofClear(0);
+	pfx.render(screen[1]);
+	pfx.draw(0, 0);
 	screen[0].end();
 
 	screen[1].begin();
@@ -85,10 +91,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	// output
-	//screen[0].draw(0, 0);
-	pfx.render(screen[0]);
-	pfx.draw(0, 0, Constants::screenSize.x, Constants::screenSize.y);
-	
+	screen[0].draw(0, 0, Constants::screenSize.x, Constants::screenSize.y);
 	screen[1].draw(Constants::screenSize.x, 0, Constants::screenSize.x, Constants::screenSize.y);
 }
 

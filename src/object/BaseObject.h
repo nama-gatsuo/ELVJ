@@ -8,11 +8,12 @@ class BaseObject {
 public:
 	BaseObject(int id) : visible(false), id(id) {
 		bangFlags.assign(4, false);
+		bangFlags[3] = true;
 		ofAddListener(Events::Bang, this, &BaseObject::bang);
 		ofAddListener(Events::ToggleBangStateObj, this, &BaseObject::toggleBangState);
 	}
 
-	~BaseObject() {
+	virtual ~BaseObject() {
 		ofRemoveListener(Events::Bang, this, &BaseObject::bang);
 		ofRemoveListener(Events::ToggleBangStateObj, this, &BaseObject::toggleBangState);
 	}

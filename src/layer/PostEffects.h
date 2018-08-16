@@ -32,6 +32,7 @@ public:
 		shader.begin();
 		shader.setUniform1f("time", ofGetElapsedTimef());
 		shader.setUniform2f("res", Constants::screenSize.x, Constants::screenSize.y);
+		
 		read.draw(0, 0);
 		shader.end();
 
@@ -40,9 +41,79 @@ public:
 
 private:
 	ofShader shader;
-
 };
 
+class ComplexCovPFX : public PFX {
+public:
+	ComplexCovPFX(const glm::vec2& size) : PFX(size) {
+		shader.load("shader/vfx/passThru.vert", "shader/pfx/ComplexConv.frag");
+	}
+
+	void render(ofFbo& read, ofFbo& write) {
+
+		write.begin();
+		ofClear(0);
+
+		shader.begin();
+		shader.setUniform2f("res", Constants::renderSize.x, Constants::renderSize.y);
+		read.draw(0, 0);
+		shader.end();
+
+		write.end();
+	}
+
+private:
+	ofShader shader;
+};
+
+class MirrorCovPFX : public PFX {
+public:
+	MirrorCovPFX(const glm::vec2& size) : PFX(size) {
+		shader.load("shader/vfx/passThru.vert", "shader/pfx/MirrorConv.frag");
+	}
+
+	void render(ofFbo& read, ofFbo& write) {
+
+		write.begin();
+		ofClear(0);
+
+		shader.begin();
+		shader.setUniform1i("mode", 1);
+		shader.setUniform2f("res", Constants::renderSize.x, Constants::renderSize.y);
+		read.draw(0, 0);
+		shader.end();
+
+		write.end();
+	}
+
+private:
+	ofShader shader;
+};
+
+class ColorConvPFX : public PFX {
+public:
+	ColorConvPFX(const glm::vec2& size) : PFX(size) {
+		shader.load("shader/vfx/passThru.vert", "shader/pfx/ColorConv.frag");
+	}
+
+	void render(ofFbo& read, ofFbo& write) {
+
+		write.begin();
+		ofClear(0);
+
+		shader.begin();
+		shader.setUniform1i("isNega", 0);
+		shader.setUniform4f("theme", ofFloatColor(1.));
+		shader.setUniform2f("res", Constants::renderSize.x, Constants::renderSize.y);
+		read.draw(0, 0);
+		shader.end();
+
+		write.end();
+	}
+
+private:
+	ofShader shader;
+};
 
 class PostEffects {
 public:
@@ -70,19 +141,23 @@ public:
 		s.width = width;
 		s.height = height;
 		s.internalformat = GL_RGBA;
-		s.useDepth = true;
-		s.useStencil = true;
-
+		//s.useDepth = true;
+		//s.useStencil = true;
+		
+		ofDisableArbTex();
 		for (int i = 0; i < 2; i++) {
 			pingPong[i].allocate(s);
 		}
-		
+		ofEnableArbTex();
+
 		numProcessedPasses = 0;
 		currentReadFbo = 0;
 
 		// create passes as default
 		glitch = createPass<GlitchPFX>();
-		
+		createPass<MirrorCovPFX>();
+		createPass<ComplexCovPFX>();
+		createPass<ColorConvPFX>();
 	}
 
 	void render(ofFbo& read, bool autoDraw = false) {
