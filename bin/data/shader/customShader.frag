@@ -27,6 +27,6 @@ void main(){
         outputColor0 = vColor;
         outputColor1 = vPosition;
         outputColor2 = vec4(calcFlatNormal(vPosition.xyz), vDepth);
-        outputColor3 = any(greaterThan(vColor, vec4(1.))) ? vColor : vec4(0.,0.,0.,1.);
+        outputColor3 = any(greaterThan(vColor, vec4(1.))) ? vec4(vColor.rgb * 0.5, 1.) : vec4(0.,0.,0.,1.);
     }
 }

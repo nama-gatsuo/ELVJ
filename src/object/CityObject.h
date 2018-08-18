@@ -1,11 +1,12 @@
 #pragma once
 #include "BaseObject.h"
+#include "Util.h"
 
 using namespace glm;
 
 class CityObject : public BaseObject {
 public:
-	CityObject(int id) : BaseObject(id) {
+	CityObject(int id) : BaseObject(id), isBroken(false) {
 		
 		shader.load("shader/scene/broken");
 
@@ -20,22 +21,29 @@ public:
 			}
 		}
 		mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+
+
 	}
 	
 	void update() {
 		
 	}
 	
-	void draw(float lds) const {
+	void draw(float lds) {
 		shader.begin();
 		shader.setUniform1f("lds", lds);
-
+		shader.setUniform1f("seed", v.get());
+		
 		mesh.draw();
 
 		shader.end();
 	}
 
 	void bang(int& id) {
+		if (bangFlags[id]) {
+			if (isBroken) v.to(1.);
+			else v.to(0.);
+		}
 		
 	}
 
@@ -197,5 +205,8 @@ private:
 		mesh.append(box);
 
 	}
+
+	bool isBroken;
+	Util::SmoothVal v;
 
 }; 

@@ -8,7 +8,7 @@ class BaseObject {
 public:
 	BaseObject(int id) : visible(false), id(id) {
 		bangFlags.assign(4, false);
-		bangFlags[3] = true;
+		bangFlags[2] = true;
 		ofAddListener(Events::Bang, this, &BaseObject::bang);
 		ofAddListener(Events::ToggleBangStateObj, this, &BaseObject::toggleBangState);
 	}
@@ -19,7 +19,7 @@ public:
 	}
 
 	virtual void update() = 0;
-	virtual void draw(float lds) const = 0;
+	virtual void draw(float lds) = 0;
 
 	virtual void bang(int& id) = 0;
 

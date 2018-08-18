@@ -23,6 +23,8 @@ public:
 
 private:
 	ofPtr<BaseWorld> world;
+	ofPtr<BaseWorld> world2;
+
 	ofPtr<Mixer> mixer;
 	ofFbo screen[2];
 	PostEffects pfx;

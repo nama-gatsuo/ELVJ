@@ -49,7 +49,6 @@ public:
 	}
 
 	void render() {
-
 		ThreeLayer::render();
 	}
 
@@ -80,4 +79,23 @@ public:
 		d->setFocus(0.1);
 		d->setMaxBlur(0.1);
 	}
+};
+
+class SimpleThreeLayer : public ThreeLayer {
+public:
+	SimpleThreeLayer(const glm::ivec2& size, int id) : ThreeLayer(size, id) {
+		processor.createPass<HdrBloomPass>();
+
+		//auto d = processor.createPass<DofPass>();
+		//d->setAperture(0.02);
+		//d->setFocus(0.1);
+		//d->setMaxBlur(0.1);
+	}
+
+	void render() {
+		ThreeLayer::render();
+	}
+
+private:
+	
 };

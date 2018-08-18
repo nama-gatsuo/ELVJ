@@ -18,13 +18,15 @@ public:
 		ofBackground(0);
 		
 		ofDisableDepthTest();
-		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+		
 	}
 
 	void update() {}
 	
 	void draw() {
-		
+
+		ofEnableDepthTest();
+		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		cam.begin();
 
 		mainApp->getRearFbo().getTextureReference().bind();
@@ -46,7 +48,9 @@ public:
 		mainApp->getFrontFbo().getTextureReference(0).unbind();
 
 		cam.end();
-		
+		ofDisableDepthTest();
+		ofDisableBlendMode();
+
 	}
 
 	ofPtr<ofApp> mainApp;
